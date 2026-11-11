@@ -1,19 +1,19 @@
 ENVIRONMENT AND TOOLS
 
 STACK
-(fill in: language, framework, versions, package manager)
+Node >= 18, ES modules, zero runtime dependencies (code: package.json). Tests: node:test.
 
 INSTALL
-(fill in: exact commands)
+None for development (no deps). Users: `npx -y github:nickpalade/kbsmith init` (README.md).
 
 RUN
-(fill in)
+node bin/kbsmith.mjs <init|tune|doctor|team|help>
 
 TEST
-(fill in)
+npm test (23 tests, all pass 2026-11-11 on Node 24). KB check: node .kbsmith/scripts/kb-lint.mjs
 
 DEPLOY / RELEASE
-(fill in; who is allowed to run it)
+git push to the public GitHub repo main branch; npx installs straight from it. Owner OK required.
 
 TOOLS AND MCP SERVERS
 (fill in: what Claude has access to and what each is for)

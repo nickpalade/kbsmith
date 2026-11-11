@@ -1,11 +1,13 @@
-STATUS: v0.1.0 reviewed, ready to publish | updated 2026-11-11
+STATUS: v0.1.0 published (public GitHub repo) | updated 2026-11-11
 
 NEXT
 - [x] Review agents: code, privacy leak scan, README critique (2026-11-11).
-- [ ] Create the GitHub repo and push (only after the owner says yes).
+- [x] Create the GitHub repo and push (2026-11-11, public).
 - [ ] Try the one-prompt install from GitHub on a clean folder.
+- [ ] Fill kb/03-environment.txt and kb/14-testing.txt (still template placeholders).
 
 LOG (newest at bottom; one dated line per session)
 2026-11-11  Knowledge base installed with kbsmith (dogfood).
 2026-11-11  CLI, template, team mode, plugin, docs and README written; 20/20 tests pass.
 2026-11-11  Review pass: privacy (dates/examples genericised), README fixes, 11 code findings fixed (team sync branch guard, outgoing-path check, no autostash, 120s team hook timeout, git-aware stale check, remind mode, join keeps data, wider deny list); 22/22 tests + bare-repo sync smoke test.
+2026-11-11  Published to GitHub (public). XML-next-to-TXT boards added (kb-lint checks index + well-formedness). README humanized. 23/23 tests pass, kb-lint clean.

@@ -2,11 +2,13 @@ TODOS AND GOALS
 Format: - [ ] item (added YYYY-MM-DD, due YYYY-MM-DD). Done items move to DONE with the date.
 
 NOW
-- [ ] Review pass (code, privacy, README) (added 2026-11-11)
-- [ ] Publish to GitHub after owner OK (added 2026-11-11)
+- [ ] Test the one-prompt install from GitHub on a clean folder (added 2026-11-11)
+- [ ] Fill kb/03-environment.txt and kb/14-testing.txt (added 2026-11-11)
 
 LATER
 - [ ] Windows/macOS/Linux CI matrix for npm test (added 2026-11-11)
 - [ ] Collect usage numbers from other users for docs/TOKENS.md (added 2026-11-11)
 
 DONE
+- [x] Review pass (code, privacy, README) (added 2026-11-11, done 2026-11-11)
+- [x] Publish to GitHub after owner OK (added 2026-11-11, done 2026-11-11)

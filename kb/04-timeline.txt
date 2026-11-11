@@ -1,3 +1,4 @@
 TIMELINE (YYYY-MM-DD  text, newest at bottom)
 2026-11-11  Knowledge base installed with kbsmith.
 2026-11-11  XML-next-to-TXT convention added (rules section 5, SETUP planning step, kb-lint, FAQ).
+2026-11-11  v0.1.0 pushed to a public GitHub repo.

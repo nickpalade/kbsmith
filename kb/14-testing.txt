@@ -1,13 +1,14 @@
 TESTING
 
 WHAT CLAUDE RUNS ALONE
-(fill in: unit tests, linters, type checks, local builds, screenshots of a local run)
+npm test, node --check on touched .mjs files, kb-lint, `node bin/kbsmith.mjs init` into a temp folder.
 
 WHAT THE HUMAN CHECKS
-(fill in: feel, UX, devices, anything touching live systems)
+The one-prompt install in a real Claude Code session; README tone; anything pushed to GitHub.
 
 HOW TO TEST
-(fill in: commands and expected output)
+npm test  -> "pass 23, fail 0" (2026-11-11)
+node .kbsmith/scripts/kb-lint.mjs  -> "kb-lint: ok (0 warning(s))"
 
 BUG HUNTING ROUTINE
 1. Reproduce first, with the exact steps and output.
