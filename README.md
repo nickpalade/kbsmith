@@ -45,6 +45,10 @@ kb/
   ...
 ```
 
+Plain text by default. When something is really a table (a task board several sessions update by
+id, a phased plan with dependencies) it can live in a small `.xml` file next to the `.txt`, one line
+per task. The text file keeps the reasoning and points to it. Most projects never need one.
+
 Claude reads the index, then only the file it needs. Every fact has a source and a date
 ("per user YYYY-MM-DD", "code: src/api.ts:42"). Guesses are marked INFERRED so they can't quietly
 turn into facts.

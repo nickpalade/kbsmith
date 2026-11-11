@@ -8,7 +8,7 @@ import { mergeSettings, diffSettings, parseArgs, fillPlaceholders } from '../src
 import { buildPatch, applyPatch } from '../src/tune.mjs';
 import { withHooks, SOLO_HOOKS } from '../src/hooks.mjs';
 import { withAttributes, enableTeam } from '../src/team.mjs';
-import { lint } from '../template/.kbsmith/scripts/kb-lint.mjs';
+import { lint, xmlProblem } from '../template/.kbsmith/scripts/kb-lint.mjs';
 import { sessionLines, stopMessage, userLine } from '../template/.kbsmith/scripts/kb-hook.mjs';
 import { loadConfig } from '../template/.kbsmith/scripts/lib.mjs';
 
@@ -68,6 +68,20 @@ test('kb-lint catches a secret and a missing index line', () => {
   const { errors } = lint(dir, loadConfig(dir));
   assert.ok(errors.some((e) => /looks like it contains/.test(e)), errors.join('\n'));
   assert.ok(errors.some((e) => /40-notes/.test(e)), errors.join('\n'));
+});
+
+test('kb-lint checks xml boards: index line and well-formedness', () => {
+  const ok = '<?xml version="1.0"?>\n<!-- a & b -->\n<board><task id="T1" status="open" deps="">Fix a &amp; b</task><task id="T2"/></board>\n';
+  assert.equal(xmlProblem(ok), null);
+  assert.match(xmlProblem('<board><task>a</board>'), /closes/);
+  assert.match(xmlProblem('<board><task>a & b</task></board>'), /unescaped/);
+  assert.match(xmlProblem('<board></board><board></board>'), /one root/);
+  assert.match(xmlProblem('<board><task>1 < 2</task></board>'), /stray/);
+  const dir = fresh();
+  writeFileSync(join(dir, 'kb/26-board.xml'), '<board><task id="T1">x</board>\n');
+  const { errors } = lint(dir, loadConfig(dir));
+  assert.ok(errors.some((e) => /26-board\.xml is not listed/.test(e)), errors.join('\n'));
+  assert.ok(errors.some((e) => /not well-formed/.test(e)), errors.join('\n'));
 });
 
 test('stop hook blocks once when code is newer than the status page', () => {

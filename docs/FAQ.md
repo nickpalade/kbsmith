@@ -8,6 +8,12 @@ and some slash commands. You can read and edit all of it in any editor. Git is t
 Claude reads text files natively and cheaply. Numbered files plus an index give it a map, so it
 reads one file instead of a whole vault. Nothing to install, nothing to sync except git.
 
+**Why are some files `.xml`?**
+Only for things that are really tables: a task board that several sessions update by id, or a
+phased plan with dependencies. One element per task, fields as attributes, so Claude can change one
+status without rewriting a paragraph. Everything else stays `.txt`, because XML costs more tokens
+for prose. `kb-lint` checks every `.xml` file is listed in the index and well-formed.
+
 **Does it work with an existing project?**
 Yes. Setup tags a baseline (`kbsmith-baseline-YYYY-MM-DD`), then parallel agents map the code:
 structure, main flows, data, quality, history. The findings go into the KB with file:line

@@ -5,7 +5,7 @@
 //
 // Checks: every kb file is in 00-INDEX.txt and every indexed file exists; every kb/NN-*.txt
 // reference in the rules, commands and agents exists; no {{PLACEHOLDER}} left; nothing that
-// looks like a secret; the always-loaded rules file stays small.
+// looks like a secret; the always-loaded rules file stays small; kb/*.xml boards are well-formed.
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -23,6 +23,31 @@ export const SECRET_PATTERNS = [
 ];
 
 const RULES_SOFT_LIMIT = 6000; // bytes; the rules file is loaded into every session
+const XML_SOFT_LIMIT = 8000;   // bytes; a board that grows past this is carrying history
+
+// Cheap well-formedness check for the small KB boards: matching tags, one root, escaped '&'.
+// Not a full parser (no DTDs, no CDATA); enough to catch a hand edit gone wrong.
+export function xmlProblem(text) {
+  const body = text.replace(/<\?[\s\S]*?\?>/g, '').replace(/<!--[\s\S]*?-->/g, '');
+  const amp = /&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[\da-fA-F]+);)/.exec(body);
+  if (amp) return `unescaped "&" near "${body.slice(amp.index, amp.index + 20).trim()}" (write &amp;)`;
+  const stack = [];
+  let roots = 0;
+  for (const m of body.matchAll(/<(\/?)([A-Za-z_][\w.-]*)((?:[^>"']|"[^"]*"|'[^']*')*?)(\/?)>/g)) {
+    const [, close, name, , selfClose] = m;
+    if (close) {
+      const open = stack.pop();
+      if (open !== name) return `</${name}> closes <${open || 'nothing'}>`;
+    } else {
+      if (stack.length === 0) roots += 1;
+      if (!selfClose) stack.push(name);
+    }
+  }
+  if (stack.length) return `<${stack.pop()}> is never closed`;
+  if (roots !== 1) return `expected one root element, found ${roots}`;
+  if (/<(?![\/A-Za-z_])/.test(body.replace(/<(\/?)[A-Za-z_][\w.-]*(?:[^>"']|"[^"]*"|'[^']*')*?\/?>/g, ''))) return 'stray "<" (write &lt;)';
+  return null;
+}
 
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -39,7 +64,7 @@ export function lint(root, config) {
   const kb = join(root, config.kbDir);
   if (!existsSync(kb)) return { errors: [`missing ${config.kbDir}/ folder`], warnings };
 
-  const files = walk(kb).filter((f) => /\.(txt|md)$/.test(f));
+  const files = walk(kb).filter((f) => /\.(txt|md|xml)$/.test(f));
   const rel = (f) => relative(kb, f).split('\\').join('/');
   const indexFile = join(kb, '00-INDEX.txt');
   const index = existsSync(indexFile) ? readFileSync(indexFile, 'utf8') : '';
@@ -50,7 +75,7 @@ export function lint(root, config) {
   for (const name of numbered) {
     if (!index.includes(name)) errors.push(`${name} is not listed in 00-INDEX.txt`);
   }
-  for (const match of index.matchAll(/^(\d\d-[\w.-]+\.(?:txt|md))/gm)) {
+  for (const match of index.matchAll(/^(\d\d-[\w.-]+\.(?:txt|md|xml))/gm)) {
     if (!existsSync(join(kb, match[1]))) errors.push(`00-INDEX.txt lists ${match[1]} but the file does not exist`);
   }
 
@@ -61,7 +86,7 @@ export function lint(root, config) {
     .flatMap((d) => walk(d))];
   for (const src of refSources.filter(existsSync)) {
     const text = readFileSync(src, 'utf8');
-    for (const m of text.matchAll(/\bkb\/(\d\d-[\w.-]+\.(?:txt|md))/g)) {
+    for (const m of text.matchAll(/\bkb\/(\d\d-[\w.-]+\.(?:txt|md|xml))/g)) {
       if (!existsSync(join(kb, m[1]))) errors.push(`${relative(root, src)} points to kb/${m[1]}, which does not exist`);
     }
   }
@@ -74,6 +99,11 @@ export function lint(root, config) {
     if (placeholder) warnings.push(`${rel(f)} still has ${placeholder[0]}`);
     for (const [pattern, label] of SECRET_PATTERNS) {
       if (pattern.test(text)) errors.push(`${rel(f)} looks like it contains a ${label}. Remove it; write "stored in <password manager>" instead`);
+    }
+    if (f.endsWith('.xml')) {
+      const problem = xmlProblem(text);
+      if (problem) errors.push(`${rel(f)} is not well-formed XML: ${problem}`);
+      if (text.length > XML_SOFT_LIMIT) warnings.push(`${rel(f)} is ${text.length} bytes; drop done rows (history belongs in the .txt)`);
     }
   }
 

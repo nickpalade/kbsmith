@@ -2,3 +2,4 @@ DECISIONS
 Format: D-<n> YYYY-MM-DD | decision | why | alternatives considered | revisit when
 
 D-1 2026-11-11 | Plain-text, git-tracked KB (kbsmith) as project memory | survives /clear and new sessions, reviewable in diffs, no extra tools | Obsidian vault, memory MCP server, chat history only | the KB stops being read or updated
+D-2 2026-11-11 | Optional .xml companion files for super-structured records (boards, phased plans, contracts); kb-lint checks index + well-formedness | per user: structured planning in xml next to txt, sparingly to save tokens | xml inside txt files; JSON; everything in txt | boards drift from the txt, or xml spreads to prose

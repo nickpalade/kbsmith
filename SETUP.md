@@ -48,6 +48,8 @@ Then present 2-3 options with trade-offs and ONE recommendation. Let the user pi
 Write the result: `kb/03-environment.txt` (stack, commands), `kb/05-architecture.txt` (planned parts,
 data flow), `kb/06-todos.txt` (milestones M0..M3 with done-criteria), `kb/11-decisions.txt` (D-2..),
 `kb/19-sources.txt` (links read), `kb/12-open-questions.txt`.
+If the plan has many tasks with owners or dependencies (several people or parallel sessions), put
+the task list in `kb/06-todos.xml` (rule in `kb/AGENTS.md` section 5) and keep the milestones in the .txt.
 Do not write product code in this chat unless the user asks. Offer M0 (skeleton runs, one test passes)
 as the next session's first task.
 

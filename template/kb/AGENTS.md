@@ -46,6 +46,10 @@ Run `/postmortem`: list attempts, prove the root cause, write the lesson into
 - Tag every fact with a source and date: `per <person> YYYY-MM-DD`, `docs YYYY-MM-DD`,
   `code: path:line`. Guesses are marked INFERRED; facts from memory are marked VERIFY.
 - New topic: next free number, plus one line in `kb/00-INDEX.txt`.
+- Records with fixed fields that you filter or update by id (task board, phased plan, API
+  contract) may go in a companion `kb/NN-name.xml`, sparingly. One element per record, fields
+  as attributes: `<task id="T1" status="open|doing|blocked|done" owner="" deps="">Title</task>`.
+  The .txt keeps context and points to it; never copy items between them. Prose stays .txt.
 - Commit the KB alone: `git add kb && git commit -m "docs: <what changed>"`.
 
 ## 6. Waiting on something: start a background watcher
