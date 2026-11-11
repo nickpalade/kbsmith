@@ -3,12 +3,11 @@
 ## Where it came from
 
 kbsmith is not a framework someone designed on a whiteboard. It's the setup one person grew
-over months of daily Claude Code use across very different work: a software job, a small
-company's internal knowledge, a startup, university courses and personal projects. Each area got
-its own plain-text knowledge base, and the same patterns kept proving themselves:
+over months of daily Claude Code use across very different kinds of work: code, business
+docs, studying and side projects. Each area got its own plain-text knowledge base, and the same patterns kept proving themselves:
 
 - **Numbered files plus an index** beat one giant CLAUDE.md. Claude reads the index, then one file.
-- **Every fact gets a source and a date.** "per user 2026-10-13", "code: src/x.ts:42". Guesses are
+- **Every fact gets a source and a date.** "per user YYYY-MM-DD", "code: src/x.ts:42". Guesses are
   marked INFERRED, half-remembered things VERIFY. That stops the KB slowly filling with confident
   nonsense.
 - **Hooks keep it honest.** A KB that isn't updated rots. The Stop hook catches it the same turn.

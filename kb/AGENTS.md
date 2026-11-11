@@ -48,7 +48,7 @@ Run `/postmortem`: list attempts, prove the root cause, write the lesson into
 - New topic: next free number, plus one line in `kb/00-INDEX.txt`.
 - Commit the KB alone: `git add kb && git commit -m "docs: <what changed>"`.
 
-## 6. Waiting = arm an auto-resume
+## 6. Waiting on something: start a background watcher
 Never end a turn with "waiting for X, tell me when". If blocked on something that changes
 by itself (a build, a server, a lock), start a background command that exits when the
 condition is true (with a timeout), say in one line what you wait for, and continue when it fires.

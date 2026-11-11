@@ -126,3 +126,17 @@ test('SETUP.md in the template matches the root copy', () => {
   const copy = new URL('../template/.kbsmith/SETUP.md', import.meta.url);
   assert.equal(readFileSync(copy, 'utf8'), readFileSync(root, 'utf8'));
 });
+
+test('flag values may contain "=" and a clean git tree after a pull is not stale', async () => {
+  assert.deepEqual(parseArgs(['--name=a=b']).flags, { name: 'a=b' });
+  const { gitAgrees } = await import('../template/.kbsmith/scripts/kb-hook.mjs');
+  const { spawnSync } = await import('node:child_process');
+  const dir = fresh();
+  const g = (...a) => spawnSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { cwd: dir });
+  writeFileSync(join(dir, 'app.js'), 'x\n');
+  g('add', '-A'); g('commit', '-qm', 'init');
+  // committed long ago relative to a fresh status page: not stale even though file mtimes are new
+  assert.equal(gitAgrees(dir, ['kb'], Date.now() + 60_000), false);
+  writeFileSync(join(dir, 'app.js'), 'y\n');
+  assert.equal(gitAgrees(dir, ['kb'], Date.now() + 60_000), true); // uncommitted change
+});

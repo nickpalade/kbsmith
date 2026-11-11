@@ -32,3 +32,7 @@ ENTRIES
 2026-11-11  A global gitignore with `.claude/` silently hid template/.claude/ (all slash commands)
   from the repo. Lesson: after `git add -A` on a new repo, check that every expected folder is
   staged (git status | grep). Fix: `!.claude/` in the repo .gitignore and in template/gitignore.kbsmith.
+
+2026-11-11  Editing JS through Python string replacements turned '\n' into a real newline and broke
+  stop-sync.mjs (SyntaxError). Lesson: edit .mjs files with the Edit tool, and run
+  `node --check` on every touched script before npm test.

@@ -9,6 +9,7 @@
 // Project mode: status page = kb/02-status.txt, code = everything outside kb/.
 // Hub mode:     status page = kb/projects/<name>.txt, code = projects/<name>/.
 
+import { spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -45,8 +46,23 @@ export function projectState(root, config, project) {
   const page = statusPagePath(root, config, project);
   const newest = newestMtime(codeDir, extraIgnored);
   const pageTime = mtimeOf(page);
-  const stale = pageTime === 0 || newest.time > pageTime + GRACE_MS;
+  const stale = pageTime === 0 || (newest.time > pageTime + GRACE_MS && gitAgrees(codeDir, extraIgnored, pageTime));
   return { name: project || 'this repo', codeDir, page, pageTime, newest, stale };
+}
+
+// A pull or a fresh clone makes every file look new. If git says nothing is uncommitted
+// and the last code commit is older than the status page, the code did not really change.
+// Returns true (trust the mtime check) when git is missing or this is not a repo.
+export function gitAgrees(codeDir, ignored, pageTime) {
+  const exclude = ignored.map((d) => `:(exclude)${d}`);
+  const run = (args) => spawnSync('git', ['-c', 'core.quotePath=false', ...args, '--', '.', ...exclude],
+    { cwd: codeDir, encoding: 'utf8', timeout: 5000, windowsHide: true });
+  const status = run(['status', '--porcelain']);
+  if (status.status !== 0) return true;
+  if (status.stdout.trim()) return true; // uncommitted code changes: really stale
+  const last = run(['log', '-1', '--format=%ct']);
+  const commitMs = Number((last.stdout || '').trim()) * 1000;
+  return commitMs > pageTime + GRACE_MS;
 }
 
 function describe(root, state) {
@@ -110,6 +126,7 @@ function main() {
   if (mode === 'stop') {
     const text = stopMessage(root, config, readStdin());
     if (!text) return 0;
+    if (config.stopHook === 'remind') { console.log(text); return 0; } // show it, don't block
     process.stderr.write(text);
     return 2; // exit 2 = block the stop once; stderr goes back to Claude
   }

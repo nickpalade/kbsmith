@@ -21,6 +21,8 @@ function main() {
   if (markers.length || unmergedFiles(root).length) return log(`conflict in ${markers.join(', ') || 'unmerged files'}. Not syncing. Resolve first.`);
   const op = operationInProgress(root);
   if (op) return log(`${op} in progress. Not syncing.`);
+  const branch = git(['symbolic-ref', '--short', 'HEAD'], { cwd: root }).out;
+  if (branch !== cfg.branch) return log(`on branch "${branch || 'detached'}", not ${cfg.branch}. Not syncing.`);
 
   // 1. Pick only this person's allowed files. Identity (may call gh) is only looked up when needed.
   let myId;
@@ -58,14 +60,22 @@ function main() {
   }
   const f = git(['fetch', '--quiet', 'origin', cfg.branch], { cwd: root, timeout: 30000 });
   if (!f.ok) return log(`push skipped, offline (${firstLine(f.err)}). Next sync will retry.`);
+  // Only push commits that touch shared KB paths. Anything else is the person's own work: hands off.
+  const outgoing = git(['diff', '--name-only', `origin/${cfg.branch}..HEAD`], { cwd: root }).out.split('\n').filter(Boolean);
+  const outside = outgoing.filter((p) => DENY_PATH_RE.test(p) || !cfg.allowedPaths.some((a) => p.startsWith(a)));
+  if (outside.length) return log(`unpushed commits touch files outside the shared KB (${outside.slice(0, 3).join(', ')}). Push those yourself.`);
   const ahead = Number(git(['rev-list', '--count', `origin/${cfg.branch}..HEAD`], { cwd: root }).out || 0);
   const behind = Number(git(['rev-list', '--count', `HEAD..origin/${cfg.branch}`], { cwd: root }).out || 0);
   if (behind > 0) {
     // Rebase our commits onto origin. On conflict, abort: our commits stay as they were, unpushed.
-    const r = git(['pull', '--rebase', '--autostash', '--quiet', 'origin', cfg.branch], { cwd: root, timeout: 60000 });
+    // No --autostash: a failed stash pop would leave conflict markers in the working tree.
+    const r = git(['pull', '--rebase', '--quiet', 'origin', cfg.branch], { cwd: root, timeout: 60000 });
     if (!r.ok) {
-      git(['rebase', '--abort'], { cwd: root });  // no-op if no rebase is running
-      return log(`rebase onto origin/${cfg.branch} hit a conflict. Your ${ahead} commit(s) are kept locally. Resolve with: git pull --rebase`);
+      if (operationInProgress(root)) {
+        git(['rebase', '--abort'], { cwd: root });
+        return log(`rebase onto origin/${cfg.branch} hit a conflict. Your ${ahead} commit(s) are kept locally. Resolve with: git pull --rebase`);
+      }
+      return log(`pull failed (${firstLine(r.err)}). Often uncommitted changes in the same files: commit or stash them, then git pull --rebase.`);
     }
   }
   if (ahead === 0 && files.length === 0) return;

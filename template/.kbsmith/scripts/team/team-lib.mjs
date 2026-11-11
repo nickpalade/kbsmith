@@ -15,7 +15,8 @@ export function exec(cmd, args, { cwd, timeout = 20000 } = {}) {
   };
 }
 
-export const git = (args, opts = {}) => exec('git', args, opts);
+// core.quotePath=false: non-ASCII file names come back as-is, not as "\303\251" escapes.
+export const git = (args, opts = {}) => exec('git', ['-c', 'core.quotePath=false', ...args], opts);
 
 export const firstLine = (s) => String(s || '').split('\n')[0] || 'unknown error';
 
@@ -89,7 +90,7 @@ export function ownerOf(path) {
 }
 
 // Never commit these, even if a path rule would allow them.
-export const DENY_PATH_RE = /(^|\/)(\.env[^/]*|\.wa_session\/|inbox\/|tools\/|node_modules\/|\.venv\/)|\.session$/;
+export const DENY_PATH_RE = /(^|\/)(\.env[^/]*|\.wa_session\/|inbox\/|tools\/|node_modules\/|\.venv\/|id_rsa[^/]*|id_ed25519[^/]*|credentials[^/]*)|\.(session|pem|key|p12|pfx|keystore)$/;
 
 // Added-line patterns that look like credentials. Heuristics: a hit blocks the commit.
 export const SECRET_RE = [
@@ -102,12 +103,16 @@ export const SECRET_RE = [
 
 // Changed (modified, added, deleted, untracked) files under the allowed paths.
 export function changedFiles(root, paths) {
-  const out = git(['status', '--porcelain', '--untracked-files=all', '--', ...paths], { cwd: root }).out;
-  return out.split('\n').filter(Boolean).map((line) => {
-    const p = line.slice(3);
-    const target = p.includes(' -> ') ? p.split(' -> ')[1] : p;
-    return target.replace(/^"|"$/g, '');
-  });
+  // -z: raw paths, no quoting. A rename is "R  new\0old\0", so skip the old name.
+  const parts = git(['status', '--porcelain', '-z', '--untracked-files=all', '--', ...paths], { cwd: root }).out.split('\0');
+  const files = [];
+  for (let i = 0; i < parts.length; i += 1) {
+    const entry = parts[i];
+    if (!entry) continue;
+    files.push(entry.slice(3));
+    if (entry[0] === 'R' || entry[0] === 'C') i += 1;
+  }
+  return files;
 }
 
 // Files with conflict markers (both sides of a failed merge/rebase left in the working tree).
@@ -135,7 +140,8 @@ export function scanStagedDiff(root) {
   const hits = new Set();
   let file = '';
   for (const line of diff.split('\n')) {
-    if (line.startsWith('+++ ')) { file = line.slice(6); continue; }
+    if (line.startsWith('diff --git ')) { file = line.split(' b/').pop(); continue; }
+    if (line.startsWith('Binary files ')) { hits.add(file); continue; } // can't scan binaries: never auto-share them
     if (!line.startsWith('+') || line.startsWith('+++')) continue;
     if (SECRET_RE.some((re) => re.test(line))) hits.add(file);
   }
@@ -144,12 +150,19 @@ export function scanStagedDiff(root) {
 
 // Files under dirs whose last commit is older than `days`, oldest first.
 export function staleFiles(root, dirs, days) {
-  const files = git(['ls-files', '--', ...dirs], { cwd: root }).out.split('\n').filter(Boolean);
+  // One git log pass, newest first: the first time a file appears is its last commit.
+  const tracked = new Set(git(['ls-files', '--', ...dirs], { cwd: root }).out.split('\n').filter(Boolean));
+  const history = git(['log', '--name-only', '--format=@%ct', '--', ...dirs], { cwd: root }).out;
+  const last = new Map();
+  let ts = 0;
+  for (const line of history.split('\n')) {
+    if (line.startsWith('@')) ts = Number(line.slice(1));
+    else if (line && tracked.has(line) && !last.has(line)) last.set(line, ts);
+  }
   const now = Date.now() / 1000;
   const stale = [];
-  for (const f of files) {
-    const ts = Number(git(['log', '-1', '--format=%ct', '--', f], { cwd: root }).out);
-    if (ts && now - ts > days * 86400) stale.push({ file: f, days: Math.floor((now - ts) / 86400) });
+  for (const [f, t] of last) {
+    if (t && now - t > days * 86400) stale.push({ file: f, days: Math.floor((now - t) / 86400) });
   }
   return stale.sort((a, b) => b.days - a.days);
 }

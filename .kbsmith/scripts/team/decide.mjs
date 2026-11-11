@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // .kbsmith/scripts/team/decide.mjs
 // Append one entry to kb/11-decisions.txt with the next D-n number.
-// Usage: node .kbsmith/scripts/team/decide.mjs "Use Postgres for the pilot" --why "team knows it" --who "Alice" --source "call 2026-11-03"
+// Usage: node .kbsmith/scripts/team/decide.mjs "Use Postgres for the pilot" --why "team knows it" --who "Alice" --source "call YYYY-MM-DD"
 import { appendFileSync, existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { findRoot, firstLine } from './team-lib.mjs';

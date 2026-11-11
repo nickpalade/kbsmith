@@ -59,9 +59,14 @@ export function init(targetArg, flags = {}) {
   if (ignoreAfter !== ignoreBefore) writeFileSync(gitignore, ignoreAfter);
 
   const hooksChanged = installHooks(target, SOLO_HOOKS);
-  const gitInit = existsSync(join(target, '.git')) ? 'existing repo' : gitInitRepo(target);
+  const gitInit = insideGitRepo(target) ? 'existing repo' : gitInitRepo(target);
   printReport(target, mode, report, { claudeMd: after !== before, hooksChanged, gitInit });
   return 0;
+}
+
+function insideGitRepo(target) {
+  const r = spawnSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: target, encoding: 'utf8', windowsHide: true });
+  return r.status === 0 && r.stdout.trim() === 'true';
 }
 
 function gitInitRepo(target) {

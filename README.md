@@ -6,12 +6,14 @@ in your repo that Claude reads, keeps up to date and learns from.
 Install it in one chat. Claude asks what you're building, researches the tools, and writes the
 whole knowledge base before it touches any code.
 
+You need Node 18+ and git. Open Claude Code in your project folder and paste this:
+
 ```
 Set up kbsmith in this folder: run `npx -y github:nickpalade/kbsmith init`,
 then read .kbsmith/SETUP.md and follow it.
 ```
 
-Paste that into Claude Code. That's the install.
+That's the whole install.
 
 ---
 
@@ -44,10 +46,10 @@ kb/
 ```
 
 Claude reads the index, then only the file it needs. Every fact has a source and a date
-("per user 2026-10-13", "code: src/api.ts:42"). Guesses are marked INFERRED so they can't quietly
+("per user YYYY-MM-DD", "code: src/api.ts:42"). Guesses are marked INFERRED so they can't quietly
 turn into facts.
 
-Then a few hooks keep it honest:
+Three hooks run alongside it:
 
 - At session start Claude gets three or four short lines: where the KB is, whether the status page
   is stale, and your name.
@@ -87,7 +89,7 @@ npx -y github:nickpalade/kbsmith init            # one project
 npx -y github:nickpalade/kbsmith init --mode hub # one KB for many projects
 ```
 
-Needs Node 18+ and git. `gh` only for team mode. Zero dependencies.
+Zero dependencies. `gh` is only needed for team mode.
 
 ## Real numbers
 
@@ -107,7 +109,7 @@ benchmark, not an estimate.
 A typical prompt was 68 characters, something like "check the kb, do the next todo". That
 works because the context lives in files, not in the prompt.
 
-I want to be straight about the limits. The same month hit the usage cap 85 times, so this does
+Limits, to be fair: the same month hit the usage cap 85 times, so this does
 not make a plan unlimited. And the efficiency got better as the KB filled up (26% fewer uncached
 tokens per prompt by the end), but there was no controlled before/after test. Full breakdown,
 caveats and every setting explained: [docs/TOKENS.md](docs/TOKENS.md).
@@ -118,11 +120,11 @@ kbsmith works in the desktop app and IDE extensions too, since they all read the
 files. But I'd recommend the CLI, for two reasons.
 
 You can run five Claude sessions in five terminal tabs on five parts of the work, all reading the
-same KB. That's the biggest speedup I've found.
+same KB. For me that was the biggest speedup (one person's experience, not a controlled test).
 
-And the chat clears when you shut the computer down. That sounds like a downside. In practice it
-means you don't drag yesterday's stale assumptions into today, and since you can't lazily
-`/resume`, you write a fresh prompt and actually re-think where things stand. You stay the person
+And when you restart the computer, your terminals are gone. You could `/resume`, but the default
+is a fresh start, and that turns out to be a feature: you don't drag yesterday's stale assumptions
+into today, and you write a fresh prompt, which makes you re-think where things stand. You stay the person
 who knows what's going on. The KB makes this painless because nothing important lived only in the
 chat. More in [docs/CLI-VS-APP.md](docs/CLI-VS-APP.md), including where the app is genuinely better.
 
@@ -141,15 +143,16 @@ Bypass mode has been trustworthy enough for daily use for months. The deny list 
 the obvious accidents like `rm -rf` and force-push. It won't stop a determined model or a
 malicious repo, so use `careful` around sensitive data.
 
-Every profile also sets earlier auto-compaction, shorter tool output and medium effort, which is
-where most of the token savings come from.
+Every profile also sets earlier auto-compaction and shorter tool output, plus medium effort for
+Opus 5.5. What each setting does and why: [docs/TOKENS.md](docs/TOKENS.md).
 
 ## Teams
 
 For startups and small teams: one KB in a private GitHub repo, shared through plain `git` and `gh`.
 
 ```bash
-npx -y github:nickpalade/kbsmith team enable --owner your-org --repo team-kb
+npx -y github:nickpalade/kbsmith team enable --owner your-org --repo team-kb   # founder, once
+npx -y github:nickpalade/kbsmith team join sam "Sam Lee" "backend"            # each person, once
 ```
 
 Each session starts with a fast-forward pull and a "since last session" summary grouped by person.
@@ -167,7 +170,7 @@ force-pushes. It never changes org-wide GitHub settings either. Details in [docs
 | `/handoff` | write the state down before you stop |
 | `/postmortem` | stop retrying, find the root cause, record the lesson |
 | `/tour <system>` | guided read-only walkthrough of part of the codebase |
-| `/new-project` | plan a new project (hub mode) |
+| `/new-project` | create a new project folder and KB page (hub mode) |
 | `/kb-lint` | check for secrets, missing index lines, oversized rules |
 
 Plus `kbsmith doctor` in the terminal when something seems off.
@@ -182,6 +185,8 @@ Plus `kbsmith doctor` in the terminal when something seems off.
 | Hooks that catch a stale KB | yes | no | no | no |
 | Readable without any tool | yes | yes | yes | no |
 | Shared with a team | git + gh | git | sync service | depends |
+| Semantic / fuzzy search | no | no | with plugins | often |
+| Works with zero setup | no, one install chat | yes | no | no |
 
 ## How to prompt with it
 

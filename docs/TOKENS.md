@@ -5,7 +5,7 @@ Nothing is made up. Where something can't be proven, it says so.
 
 ## The real numbers: one month, one project, one $20 plan
 
-The author ran kbsmith on a real software project for 29 days (13 Oct to 10 Nov 2026), on the
+The author ran kbsmith on a real software project for about a month (29 days), on the
 **$20/month Pro plan**. The numbers come from parsing every Claude Code transcript of that project.
 Each API call was deduplicated, and the cost estimate was cross-checked against Claude Code's own
 recorded cost: it came out within 4%.

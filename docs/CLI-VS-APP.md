@@ -15,7 +15,7 @@ one would take.
 kbsmith is built for this:
 - The KB is the shared memory. Every session reads the same rules, status and lessons.
 - The status page and todo file are the handoff. Sessions don't need each other's chat history.
-- Rule 6 in `kb/AGENTS.md` (arm an auto-resume) lets a session wait for another one's build, lock or
+- The background-watcher rule in `kb/AGENTS.md` lets a session wait for another one's build, lock or
   commit without you babysitting it.
 
 ## 2. The chat clears when you shut down, and that's a feature

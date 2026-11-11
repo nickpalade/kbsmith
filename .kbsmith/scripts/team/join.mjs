@@ -35,8 +35,21 @@ export function profileText(name, role, date) {
 }
 
 export function addPerson(people, id, entry) {
-  if (people[id]) return { ...people, [id]: { ...people[id], ...entry, github: [...new Set([...(people[id].github || []), ...entry.github])], git_names: [...new Set([...(people[id].git_names || []), ...entry.git_names])] } };
-  return { ...people, [id]: entry };
+  const old = people[id];
+  if (!old) return { ...people, [id]: entry };
+  const union = (key) => [...new Set([...(old[key] || []), ...(entry[key] || [])])];
+  return {
+    ...people,
+    [id]: {
+      ...old,
+      name: entry.name || old.name,
+      role: entry.role || old.role, // never wipe a role with an empty one
+      github: union('github'),
+      git_names: union('git_names'),
+      os_users: union('os_users'),
+      hosts: union('hosts'),
+    },
+  };
 }
 
 function main() {

@@ -28,10 +28,13 @@ export function withHooks(settings, hookMap, timeout = 15) {
   return { ...settings, hooks };
 }
 
-export function installHooks(projectDir, hookMap) {
+export function installHooks(projectDir, hookMap, timeout = 15) {
   const file = join(projectDir, '.claude', 'settings.json');
   const before = readJsonFile(file, {});
-  const after = withHooks(before, hookMap);
+  if (!before || typeof before !== 'object' || Array.isArray(before)) {
+    throw new Error(`${file} is not a JSON object. Fix it by hand first; nothing was changed.`);
+  }
+  const after = withHooks(before, hookMap, timeout);
   const changed = JSON.stringify(before) !== JSON.stringify(after);
   if (changed) writeJsonFile(file, after);
   return changed;

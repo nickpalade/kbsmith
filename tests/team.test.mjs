@@ -27,3 +27,13 @@ test('team guards: secrets, never-shared paths, owner folders', () => {
   assert.equal(ownerOf('people/sam/profile.txt'), 'sam');
   assert.equal(ownerOf('kb/01-about.txt'), null);
 });
+
+test('re-join keeps role, hosts and os users', () => {
+  const one = addPerson({}, 'sam', { name: 'Sam', role: 'backend', github: [], git_names: [], os_users: ['sam'], hosts: ['laptop'] });
+  const two = addPerson(one, 'sam', { name: 'Sam', role: '', github: ['sam-gh'], git_names: [], os_users: [], hosts: [] });
+  assert.equal(two.sam.role, 'backend');
+  assert.deepEqual(two.sam.hosts, ['laptop']);
+  assert.deepEqual(two.sam.os_users, ['sam']);
+  assert.ok(DENY_PATH_RE.test('kb/server.pem'));
+  assert.ok(DENY_PATH_RE.test('docs/id_rsa'));
+});

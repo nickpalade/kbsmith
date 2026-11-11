@@ -31,7 +31,7 @@ function enable(target, flags) {
   const before = existsSync(attrFile) ? readFileSync(attrFile, 'utf8') : '';
   const after = withAttributes(before);
   if (after !== before) writeFileSync(attrFile, after);
-  installHooks(target, TEAM_HOOKS);
+  installHooks(target, TEAM_HOOKS, 120); // network work: pull/push need more than 15 s
   const peopleFile = join(target, 'people', 'people.json');
   if (!existsSync(peopleFile)) writeJsonFile(peopleFile, {});
 
