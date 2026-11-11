@@ -1,7 +1,7 @@
 # kbsmith
 
-Plain-text memory for Claude Code. No Obsidian, no database, no server. Just numbered text files
-in your repo that Claude reads, keeps up to date and learns from.
+Plain-text memory for Claude Code. It's a folder of numbered text files in your repo that Claude
+reads, keeps up to date and learns from. There's nothing else to install or host.
 
 Install it in one chat. Claude asks what you're building, researches the tools, and writes the
 whole knowledge base before it touches any code.
@@ -25,7 +25,7 @@ context on every turn and still doesn't say what you decided yesterday.
 
 So people do one of two things. They keep huge sessions alive with `/resume` and compaction until
 the context is full of stale plans. Or they write longer and longer prompts. Both get expensive,
-and both make Claude worse.
+and Claude gets worse as the context fills up with old stuff.
 
 ## What kbsmith does instead
 
@@ -45,20 +45,21 @@ kb/
   ...
 ```
 
-Plain text by default. When something is really a table (a task board several sessions update by
-id, a phased plan with dependencies) it can live in a small `.xml` file next to the `.txt`, one line
-per task. The text file keeps the reasoning and points to it. Most projects never need one.
-
 Claude reads the index, then only the file it needs. Every fact has a source and a date
 ("per user YYYY-MM-DD", "code: src/api.ts:42"). Guesses are marked INFERRED so they can't quietly
 turn into facts.
+
+It's all plain text, with one exception. If something is really a table, like a task board that
+several sessions update or a plan with dependencies, it can go in a small `.xml` file next to the
+`.txt`, one line per task. The text file keeps the reasoning and points to it. Most projects never
+need one.
 
 Three hooks run alongside it:
 
 - At session start Claude gets three or four short lines: where the KB is, whether the status page
   is stale, and your name.
-- When a turn ends and code changed but the status page didn't, the Stop hook blocks once and asks
-  Claude to update it. Once. It never loops.
+- When a turn ends and code changed but the status page didn't, the Stop hook asks Claude
+  to update it. It blocks at most once per turn, so it can't get stuck in a loop.
 - When you type "still not working" for the second time, the retry guard tells Claude to stop
   guessing, find the root cause, and write the lesson down before trying again.
 
@@ -97,8 +98,8 @@ Zero dependencies. `gh` is only needed for team mode.
 
 ## Real numbers
 
-These come from parsing a month of transcripts on one real project, on the $20 Pro plan. Not a
-benchmark, not an estimate.
+I got these by parsing a month of transcripts from one real project on the $20 Pro plan. That's
+one person and one project, so treat it as an example rather than a benchmark.
 
 | | |
 |---|---:|
@@ -113,8 +114,8 @@ benchmark, not an estimate.
 A typical prompt was 68 characters, something like "check the kb, do the next todo". That
 works because the context lives in files, not in the prompt.
 
-Limits, to be fair: the same month hit the usage cap 85 times, so this does
-not make a plan unlimited. And the efficiency got better as the KB filled up (26% fewer uncached
+Two caveats. The same month hit the usage cap 85 times, so this doesn't make a plan
+unlimited. And the efficiency got better as the KB filled up (26% fewer uncached
 tokens per prompt by the end), but there was no controlled before/after test. Full breakdown,
 caveats and every setting explained: [docs/TOKENS.md](docs/TOKENS.md).
 
@@ -123,14 +124,14 @@ caveats and every setting explained: [docs/TOKENS.md](docs/TOKENS.md).
 kbsmith works in the desktop app and IDE extensions too, since they all read the same settings
 files. But I'd recommend the CLI, for two reasons.
 
-You can run five Claude sessions in five terminal tabs on five parts of the work, all reading the
-same KB. For me that was the biggest speedup (one person's experience, not a controlled test).
+You can run several Claude sessions in separate terminal tabs, each on its own part of the work,
+all reading the same KB. For me that was the biggest speedup, though that's my experience, not a
+controlled test.
 
 And when you restart the computer, your terminals are gone. You could `/resume`, but the default
-is a fresh start, and that turns out to be a feature: you don't drag yesterday's stale assumptions
-into today, and you write a fresh prompt, which makes you re-think where things stand. You stay the person
-who knows what's going on. The KB makes this painless because nothing important lived only in the
-chat. More in [docs/CLI-VS-APP.md](docs/CLI-VS-APP.md), including where the app is genuinely better.
+is a fresh start, and I've come to like that. You don't drag yesterday's stale assumptions into
+today, and writing a new prompt makes you think about where things actually stand. The KB makes
+this painless because nothing important lived only in the chat. More in [docs/CLI-VS-APP.md](docs/CLI-VS-APP.md), including where the app is genuinely better.
 
 ## Permissions
 
@@ -143,8 +144,8 @@ backs up your file before changing anything.
 | `balanced` | acceptEdits + allow list | when you want to approve commands |
 | `careful` | ask for everything | client data, production secrets, code you don't trust |
 
-Bypass mode has been trustworthy enough for daily use for months. The deny list blocks
-the obvious accidents like `rm -rf` and force-push. It won't stop a determined model or a
+I've used bypass mode every day for months without a problem. The deny list blocks the
+obvious accidents like `rm -rf` and force-push. It won't stop a determined model or a
 malicious repo, so use `careful` around sensitive data.
 
 Every profile also sets earlier auto-compaction and shorter tool output, plus medium effort for
