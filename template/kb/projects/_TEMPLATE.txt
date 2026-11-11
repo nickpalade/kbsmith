@@ -1,0 +1,21 @@
+PROJECT: {{NAME}}
+STATUS: idea | updated {{DATE}}
+Folder: projects/{{NAME}}/ (own git repo). Plan: projects/{{NAME}}/PLAN.md.
+
+GOAL
+{{GOAL}}
+
+STACK
+(fill in)
+
+HOW TO RUN
+(fill in)
+
+NEXT
+- [ ] M0: skeleton runs, one test passes
+
+DECISIONS
+(D-<n> YYYY-MM-DD | decision | why)
+
+LOG (newest at bottom)
+{{DATE}}  Project created.

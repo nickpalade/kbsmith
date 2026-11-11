@@ -1,0 +1,12 @@
+
+# kbsmith
+inbox/*
+!inbox/.gitkeep
+.env
+.env.*
+.claude/settings.local.json
+
+# keep Claude Code config in the repo (overrides global ignores)
+!.claude/
+.claude/settings.local.json
+node_modules/

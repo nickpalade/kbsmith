@@ -1,0 +1,10 @@
+{
+  "name": "kbsmith",
+  "version": "0.1.0",
+  "description": "Plain-text project memory for Claude Code: a git-tracked knowledge base, hooks that keep it current, a tuned setup. One chat to install.",
+  "author": { "name": "kbsmith contributors" },
+  "homepage": "https://github.com/nickpalade/kbsmith",
+  "repository": "https://github.com/nickpalade/kbsmith",
+  "license": "MIT",
+  "keywords": ["knowledge-base", "memory", "hooks", "setup"]
+}

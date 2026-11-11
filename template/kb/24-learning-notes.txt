@@ -1,0 +1,2 @@
+LEARNING NOTES (concepts learned while working)
+Format: YYYY-MM-DD | concept | 2-3 line plain explanation | where it is used | source

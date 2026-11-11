@@ -1,0 +1,9 @@
+{
+  "subagent-haiku": {
+    "_comment": "Subagents (search, research, chores) run on Haiku: big saving on fan-out work. Reviewers should pin model: opus in their own frontmatter.",
+    "env": { "CLAUDE_CODE_SUBAGENT_MODEL": "haiku" }
+  },
+  "no-telemetry": {
+    "env": { "DISABLE_TELEMETRY": "1" }
+  }
+}

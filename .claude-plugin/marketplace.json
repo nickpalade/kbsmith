@@ -1,0 +1,11 @@
+{
+  "name": "kbsmith",
+  "owner": { "name": "kbsmith contributors" },
+  "plugins": [
+    {
+      "name": "kbsmith",
+      "source": "./",
+      "description": "Plain-text project memory for Claude Code. Run /kbsmith:setup in any project."
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+TIMELINE (YYYY-MM-DD  text, newest at bottom)
+2026-11-11  Knowledge base installed with kbsmith.

@@ -1,0 +1,20 @@
+ARCHITECTURE (kbsmith)
+
+LAYOUT
+bin/kbsmith.mjs         CLI entry: init | tune | doctor | team | help
+src/init.mjs            copy template (never overwrite), CLAUDE.md import, .gitignore merge, hooks
+src/tune.mjs            build/apply settings patch for ~/.claude/settings.json from profiles/
+src/doctor.mjs          environment + install checks
+src/team.mjs            team enable/join; prints gh commands, never runs them
+src/hooks.mjs           hook maps (solo/team) + pure withHooks merge
+src/fsutil.mjs          paths, JSON read/write, settings merge/diff, arg parsing
+profiles/*.json         base + trusted/balanced/careful + extras
+template/               everything copied into a user's repo (kb/, .kbsmith/, .claude/)
+template/.kbsmith/scripts/   kb-hook (SessionStart/Stop), retry-guard, kb-lint, new-project,
+                             statusline, team/* (session-start, stop-sync, join, decide, ...)
+.claude-plugin/ + commands/  plugin packaging (/kbsmith:setup, /kbsmith:doctor)
+tests/*.test.mjs        node:test, run with npm test
+
+FLOW
+npx init -> files copied -> Claude reads .kbsmith/SETUP.md -> interview -> research or audit
+-> KB filled -> tune -> optional team -> lint + doctor -> handover.

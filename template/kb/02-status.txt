@@ -1,0 +1,10 @@
+STATUS: setup | updated {{DATE}}
+
+NEXT
+- [ ] (first milestone)
+
+PROJECTS (hub mode only; name | status | started | goal | path)
+- (none yet)
+
+LOG (newest at bottom; one dated line per session)
+{{DATE}}  Knowledge base installed with kbsmith.

@@ -1,0 +1,17 @@
+ABOUT ({{PROJECT}})
+
+GOAL
+{{GOAL}}
+
+WHO IT IS FOR
+(fill in: users, customers, audience)
+
+SCOPE
+In:  (fill in)
+Out: (fill in)
+
+PEOPLE AND ROLES
+(fill in: who decides what. No contact details or private data here.)
+
+DEFINITION OF DONE (current milestone)
+(fill in: measurable checks)

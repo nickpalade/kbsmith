@@ -1,0 +1,19 @@
+ENVIRONMENT AND TOOLS
+
+STACK
+(fill in: language, framework, versions, package manager)
+
+INSTALL
+(fill in: exact commands)
+
+RUN
+(fill in)
+
+TEST
+(fill in)
+
+DEPLOY / RELEASE
+(fill in; who is allowed to run it)
+
+TOOLS AND MCP SERVERS
+(fill in: what Claude has access to and what each is for)

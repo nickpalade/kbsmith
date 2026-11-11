@@ -1,0 +1,14 @@
+ARCHITECTURE AND CODE MAP
+Short lines. A map, not a copy of the code. Cite code as path:line.
+
+OVERVIEW
+(fill in: the 3-6 main parts and how data flows between them)
+
+WHERE THINGS LIVE
+(path | what it does)
+
+WHERE TO CHANGE (task -> files)
+(e.g. "add an API endpoint -> src/routes/, register it in src/app.ts")
+
+DO NOT TOUCH WITHOUT ASKING
+(generated files, other people's areas, fragile parts)

@@ -1,0 +1,10 @@
+STATUS: v0.1.0 ready for review | updated 2026-11-11
+
+NEXT
+- [ ] Review agents: code, privacy leak scan, README critique.
+- [ ] Create the GitHub repo and push (only after the owner says yes).
+- [ ] Try the one-prompt install from GitHub on a clean folder.
+
+LOG (newest at bottom; one dated line per session)
+2026-11-11  Knowledge base installed with kbsmith (dogfood).
+2026-11-11  CLI, template, team mode, plugin, docs and README written; 20/20 tests pass.

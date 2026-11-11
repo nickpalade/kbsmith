@@ -1,0 +1,16 @@
+SECURITY AND SAFETY
+
+SECRETS
+Never in the KB, code or chat. Write "stored in <password manager / .env>". .env files are git-ignored.
+kb-lint scans the KB for things that look like keys and tokens.
+
+TRUST BOUNDARIES
+(fill in: what input comes from users or the network and must be validated)
+
+DANGEROUS ACTIONS (need the human's OK every time)
+- deleting data or files outside the task, force-push, history rewrites
+- deploys, publishing, sending messages or emails
+- anything touching production data or live systems
+
+PERMISSION PROFILE
+(fill in: which Claude Code permission profile this project uses and why)

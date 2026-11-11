@@ -1,0 +1,34 @@
+MISTAKES AND LESSONS (self-correcting KB)
+Read this before retrying any failed fix. Newest at bottom.
+
+WHEN TO WRITE AN ENTRY
+- the human says it still does not work twice (the retry-guard hook will tell you)
+- a problem finally works after failed attempts
+- your own command or test fails 3 times on the same thing
+- a KB fact turned out to be wrong, or a rule was broken
+
+POSTMORTEM PROCEDURE (/postmortem)
+1. List every attempt so far and why each failed, with evidence.
+2. Verify the real root cause (code, logs, docs, --help). Unproven parts are INFERRED.
+3. Say plainly where Claude went wrong (wrong assumption, skipped check, stale fact).
+4. Write the entry below. Fix the KB file that was wrong. If the same kind of mistake
+   happened before, add it to RECURRING PATTERNS.
+5. Commit the KB: git add kb && git commit -m "docs: lesson <topic>"
+6. Only then apply the fix that follows from the root cause.
+
+ENTRY FORMAT
+=== YYYY-MM-DD | <area> | <symptom in a few words>
+Attempts:   what was tried, why each failed
+Root cause: the verified cause
+Why missed: the wrong assumption or skipped check
+Fix:        what fixed it
+Rule:       the rule that prevents it next time
+
+RECURRING PATTERNS
+- (none yet)
+
+ENTRIES
+
+2026-11-11  A global gitignore with `.claude/` silently hid template/.claude/ (all slash commands)
+  from the repo. Lesson: after `git add -A` on a new repo, check that every expected folder is
+  staged (git status | grep). Fix: `!.claude/` in the repo .gitignore and in template/gitignore.kbsmith.

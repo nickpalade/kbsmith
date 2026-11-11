@@ -1,0 +1,7 @@
+# kbsmith
+inbox/*
+!inbox/.gitkeep
+.env
+.env.*
+!.claude/
+.claude/settings.local.json

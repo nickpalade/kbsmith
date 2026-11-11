@@ -1,0 +1,16 @@
+TESTING
+
+WHAT CLAUDE RUNS ALONE
+(fill in: unit tests, linters, type checks, local builds, screenshots of a local run)
+
+WHAT THE HUMAN CHECKS
+(fill in: feel, UX, devices, anything touching live systems)
+
+HOW TO TEST
+(fill in: commands and expected output)
+
+BUG HUNTING ROUTINE
+1. Reproduce first, with the exact steps and output.
+2. One hypothesis at a time; prove or kill it with evidence.
+3. Fix the root cause and keep the test that caught it.
+4. Two failed fixes -> /postmortem.

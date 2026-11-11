@@ -1,0 +1,4 @@
+{
+  "_comment": "Sensitive data (client data, production, secrets nearby): Claude asks before every edit and command.",
+  "permissions": { "defaultMode": "default" }
+}

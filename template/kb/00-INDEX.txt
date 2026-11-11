@@ -1,0 +1,24 @@
+KNOWLEDGE BASE INDEX ({{PROJECT}})
+Started {{DATE}}. Plain text, git-tracked. Rules: kb/AGENTS.md. One line per file.
+
+00-INDEX.txt                 this index
+01-about.txt                 what this project is, goal, users, scope, people and roles
+02-status.txt                STATUS, NEXT, LOG (the status page the Stop hook checks)
+03-environment.txt           stack, tools, versions, how to install / run / test / deploy
+04-timeline.txt              dated events, newest at bottom
+05-architecture.txt          code map: what lives where, data flow, where-to-change map
+06-todos.txt                 todos and goals, DONE section with dates
+07-principles.txt            how we work (expanded rules, review checklist)
+08-user.txt                  who the user is: name, role, preferences, corrections (learned over time)
+10-security.txt              secrets handling, trust boundaries, dangerous actions
+11-decisions.txt             decision log D-<n> with alternatives and "revisit when"
+12-open-questions.txt        unknowns, who must answer
+14-testing.txt               how to test, what Claude may run alone, what the human checks
+19-sources.txt               research links and docs read, with dates
+24-learning-notes.txt        concepts learned while working (short explanations)
+25-mistakes-and-lessons.txt  postmortems: why things failed, rules learned
+
+EVIDENCE NOTE
+Every fact carries a source and date: "per <person> YYYY-MM-DD", "docs YYYY-MM-DD", "code: path:line".
+INFERRED = a guess, say so when using it. VERIFY = from memory or a third-party page, check first.
+Time-sensitive facts (versions, prices, limits, deadlines) are re-checked before use.

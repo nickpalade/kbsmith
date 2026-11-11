@@ -1,0 +1,17 @@
+ABOUT (kbsmith)
+
+GOAL
+Ship kbsmith: a zero-dependency installer that gives any Claude Code project a plain-text, git-tracked knowledge base with hooks, a one-chat setup, tuning profiles and team sync.
+
+WHO IT IS FOR
+Claude Code users (solo devs, vibe coders, small teams/startups) who want memory across sessions
+without a database, server or notes app.
+
+SCOPE
+In:  CLI (init, tune, doctor, team), template KB, hooks, slash commands, plugin packaging, docs.
+Out: hosted services, vector search, editors/GUIs, non-Claude agents (may read AGENTS.md anyway).
+
+DEFINITION OF DONE (v0.1.0)
+- npm test green (20 tests), kb-lint clean on a fresh init, doctor clean.
+- README + docs/ reviewed for privacy leaks and AI-sounding prose.
+- Public GitHub repo created and `npx -y github:nickpalade/kbsmith init` works from it.

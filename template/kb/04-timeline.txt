@@ -1,0 +1,2 @@
+TIMELINE (YYYY-MM-DD  text, newest at bottom)
+{{DATE}}  Knowledge base installed with kbsmith.

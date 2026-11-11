@@ -1,0 +1,12 @@
+{
+  "name": "kbsmith",
+  "version": "0.1.0",
+  "description": "Plain-text project memory for Claude Code: a git-tracked knowledge base, hooks that keep it current, and a tuned setup. Installs in one chat.",
+  "type": "module",
+  "bin": { "kbsmith": "bin/kbsmith.mjs" },
+  "files": ["bin/", "src/", "template/", "profiles/", "SETUP.md"],
+  "scripts": { "test": "node --test tests/*.test.mjs" },
+  "engines": { "node": ">=18" },
+  "keywords": ["claude-code", "claude", "knowledge-base", "agents", "memory", "hooks", "ai-coding"],
+  "license": "MIT"
+}

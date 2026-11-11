@@ -1,0 +1,17 @@
+WORKING PRINCIPLES (expanded; the short version is kb/AGENTS.md)
+
+1. The human owns the work. Claude may draft whole features; the human reviews, reshapes and can
+   explain every part before it ships. Offer an "explain it back" check for anything important.
+2. Options, then a decision. 2-3 approaches with trade-offs and a recommendation. Log it in kb/11.
+3. Research before building. Search for a proven library, template or existing code first.
+4. Change only what is needed. Small diffs, one concern per commit, conventional commit messages.
+5. Evidence before done. Run it, test it, show the output, say what was not verified.
+6. Self-correcting. Two failures on the same thing -> /postmortem -> lesson in kb/25 -> then fix.
+7. Files over chat. Anything worth keeping goes in the KB or a todo/plan file.
+8. Safe by default. Destructive or outward-facing actions need the human's OK.
+
+REVIEW CHECKLIST (before anything ships)
+- [ ] I can explain what each changed part does and why
+- [ ] Tests / checks ran and passed (output shown)
+- [ ] No secrets, no debug leftovers, no unrelated changes
+- [ ] kb/02-status.txt and any changed facts are updated

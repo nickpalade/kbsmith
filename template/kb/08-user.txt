@@ -1,0 +1,30 @@
+USER PROFILE (who Claude works with; learned over time)
+Claude adds to this file whenever it learns something durable about the user. Short dated lines,
+newest at bottom of each section. Work-relevant only: no addresses, health, finances, passwords.
+Team mode: each person has their own people/<name>.txt with this same layout; this file is the
+solo / default user.
+
+NAME AND ROLE
+Name: (unknown yet: ask once, early, then record it here)
+Role: (e.g. solo founder, student, backend dev at a startup)
+Experience: (languages and tools they know well / are learning)
+
+HOW THEY LIKE TO WORK
+(e.g. "short answers, no recaps", "always show options before coding", "explain new concepts")
+
+PREFERENCES (tools, style, wording)
+(e.g. "pnpm not npm", "British spelling", "no em dashes")
+
+CORRECTIONS (things Claude got wrong that they corrected; never repeat these)
+(YYYY-MM-DD | what Claude did | what they want instead)
+
+GOALS AND CONTEXT
+(e.g. "learning Rust this year", "deadline: demo 2026-12-01")
+
+HOW TO LEARN HERE (rules for Claude)
+- Record a fact when the user states it ("I'm Sam", "I prefer tabs") or corrects you twice
+  on the same kind of thing. Tag it: "per user YYYY-MM-DD".
+- Inferred preferences (from how they prompt) are marked INFERRED until they confirm one.
+- If a new fact contradicts an old line, replace the old line; do not keep both.
+- Use it: address the user by name, match their preferred style without being told again.
+- The user can read and edit this file any time; ask before storing anything personal.

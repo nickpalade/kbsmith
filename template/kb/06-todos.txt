@@ -1,0 +1,10 @@
+TODOS AND GOALS
+Format: - [ ] item (added YYYY-MM-DD, due YYYY-MM-DD). Done items move to DONE with the date.
+
+NOW
+- [ ] (fill in)
+
+LATER
+- [ ] (fill in)
+
+DONE

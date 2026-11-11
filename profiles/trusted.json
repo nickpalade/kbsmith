@@ -1,0 +1,5 @@
+{
+  "_comment": "Daily driver for your own code on your own machine: no permission prompts at all. The deny list from base.json still applies. Not for client data, production credentials or shared machines.",
+  "permissions": { "defaultMode": "bypassPermissions" },
+  "skipDangerousModePermissionPrompt": true
+}

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "mode": "project",
+  "kbDir": "kb",
+  "stopHook": "block-once",
+  "retryGuard": true,
+  "team": { "enabled": false, "autoPull": true, "autoPush": false },
+  "ignore": []
+}
