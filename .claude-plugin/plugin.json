@@ -5,6 +5,6 @@
   "author": { "name": "kbsmith contributors" },
   "homepage": "https://github.com/nickpalade/kbsmith",
   "repository": "https://github.com/nickpalade/kbsmith",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "keywords": ["knowledge-base", "memory", "hooks", "setup"]
 }

@@ -208,4 +208,6 @@ The story: [docs/HOW-IT-WAS-BUILT.md](docs/HOW-IT-WAS-BUILT.md). Questions: [doc
 
 ## License
 
-MIT
+Apache 2.0 with the Commons Clause, copyright Nick Palade. Anyone can use it, change it and
+share it, including at work. Nobody can sell it, or sell a product or service that's mostly kbsmith.
+Details in [LICENSE](LICENSE) and [NOTICE](NOTICE).

@@ -1,44 +1,44 @@
 # Why the CLI
 
-kbsmith works anywhere Claude Code reads its settings files: the CLI, the desktop app and the IDE
-extensions all share `~/.claude/settings.json` and `.claude/settings.json`. **We recommend the
-terminal**, for workflow reasons. There is no documented token-price difference between them,
-so this is not a cost claim.
+kbsmith works anywhere Claude Code reads its settings files. The CLI, the desktop app and the IDE
+extensions all share `~/.claude/settings.json` and `.claude/settings.json`. I still recommend the
+terminal, for workflow reasons. As far as I know there's no token price difference between them,
+so this isn't about cost.
 
 ## 1. Many Claudes at once
 
-The biggest reason. In a terminal you open five tabs and run five Claude Code sessions on five
-parts of the work: one audits, one writes tests, one researches a library, one fixes the bug you
-just found, one updates docs. Each has a small, focused context. Together they finish in the time
-one would take.
+This is the main reason. In a terminal you can open five tabs and run five Claude Code sessions on
+five parts of the work: one audits, one writes tests, one researches a library, one fixes the bug
+you just found, one updates the docs. Each one keeps a small, focused context, and together they
+finish in about the time one session would take on its own.
 
-kbsmith is built for this:
-- The KB is the shared memory. Every session reads the same rules, status and lessons.
-- The status page and todo file are the handoff. Sessions don't need each other's chat history.
-- The background-watcher rule in `kb/AGENTS.md` lets a session wait for another one's build, lock or
-  commit without you babysitting it.
+kbsmith is built for working this way. The KB is the shared memory, so every session reads the same
+rules, status and lessons. The status page and todo file are the handoff, so sessions don't need
+each other's chat history. And the background-watcher rule in `kb/AGENTS.md` lets one session wait
+for another's build, lock or commit without you babysitting it.
 
-## 2. The chat clears when you shut down, and that's a feature
+## 2. The chat is gone when you shut down (I like that)
 
-It doesn't sound like a benefit. Restart the computer and the terminal sessions are gone.
-After months of daily use, the author counts it as one of the best things about the CLI:
+Restart the computer and your terminal sessions are gone. That sounds like a downside. After months
+of daily use, I count it as one of the best things about the CLI.
 
-- **Less stale context and less hallucination.** A long-resumed session carries hours of old
-  assumptions, superseded plans and half-true summaries from compaction. A fresh session reads
-  the current KB and the current code, so it works from what is true now, not from what was true
-  yesterday afternoon.
-- **You stay the one who knows what's going on.** When `/resume` is right there, it's tempting to
-  pick up where the AI left off without re-reading anything. When the chat is gone, you write a
-  fresh prompt, which means you have to think again about where things stand. That small friction
-  keeps you, the human (or the vibe coder), actually understanding the project instead of riding
-  along.
-- **The KB makes it free.** The usual reason to resume is "I'd lose everything". With kbsmith
-  nothing important lives only in the chat. `/handoff` writes the state to the KB before you stop.
-  The next session starts with a SessionStart line that points at the status page, and you're back
-  in context in one prompt.
+A session you keep resuming carries hours of old assumptions, plans you already dropped, and
+half-true summaries from compaction. A fresh one reads the current KB and the current code, so it
+works from what's true now instead of what was true yesterday afternoon. In my experience that
+means less stale context and fewer made-up answers.
 
-This is the author's experience, not a controlled study. But it is why kbsmith treats
-"state lives in files, chat is disposable" as a core rule.
+It also keeps you in charge. When `/resume` is right there, it's tempting to pick up where the AI
+left off without re-reading anything. When the chat is gone, you have to write a new prompt, and
+that means thinking about where things actually stand. It's a small bit of friction, and it's what
+keeps you (or the vibe coder) actually understanding the project instead of just riding along.
+
+The KB is what makes this cheap. People resume because they're afraid of losing everything. With
+kbsmith nothing important lives only in the chat. `/handoff` writes the state to the KB before you
+stop, the next session's start line points at the status page, and one prompt gets you back in
+context.
+
+This is my experience, not a controlled study. It's still the reason kbsmith treats "state lives in
+files, chat is disposable" as a core rule.
 
 ## 3. Everything is scriptable
 
@@ -53,12 +53,11 @@ This is the author's experience, not a controlled study. But it is why kbsmith t
 | Headless `claude -p "..."` for scripts and CI | yes | no |
 | Shift+Tab to cycle permission modes | yes | no |
 
-## When the app is the better tool
+## Where the app is better
 
-To be fair, the desktop app has things the terminal doesn't:
-- **Cloud sessions** that keep running after you close the laptop.
-- **Visual diff review** with inline comments, which is faster than reading terminal diffs.
-- A browser preview pane, computer use, and starting tasks from your phone.
+The desktop app does have things the terminal doesn't. Cloud sessions keep running after you close
+the laptop. Diff review is visual, with inline comments, which beats reading diffs in a terminal.
+It also has a browser preview pane and computer use, and you can start tasks from your phone.
 
-Good split: do the daily driving in terminals with kbsmith, and send a long unattended job to a
-cloud session when you need to walk away. Both read the same KB.
+What works for me: do the daily driving in terminals with kbsmith, and hand a long unattended job
+to a cloud session when I need to walk away. Both read the same KB.
